@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account</title>
+  <style>
+    @page {
+      width: 1080px;
+      height: 1528px;
+      size: A4;
+      margin: 0;
+      padding: 40px;
+      padding-bottom: 120px;
+      padding-top: 290px;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      color: #3A3A3A;
+    }
+    .header-container {
+      position: fixed;
+      top: -290px;
+      left: 0;
+      right: 0;
+      height: 250px;
+      width: 100%;
+      padding-top: 40px;
+    }
+    header {
+      display: grid;
+      grid-template-areas: "logo title" "info1 info2";
+      /* margin-bottom: 50px; */
+      row-gap: 30px;
+    }
+    header img {
+      width: 200px;
+      grid-area: logo;
+      align-self: center;
+    }
+    header > div {
+      text-align: right;
+      font-size: 16px;
+    }
+    header > div:nth-child(3) {
+      grid-area: info1;
+      text-align: left;
+      max-width: 400px;
+    }
+    header > div:last-child {
+      grid-area: info2;
+      max-width: 400px;
+      justify-self: flex-end;
+    }
+    header div p {
+      margin-bottom: 5px;
+    }
+    header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    header .periodo {
+      width: 100%;
+      grid-area: title;
+      text-align: right;
+      align-self: center;
+    }
+    header .periodo p {
+      border-radius: 70px;
+      background: #EFEFEF;
+      padding-inline: 10px;
+      display: inline-block;
+      font-size: 18px;
+    }
+    header h3 {
+     font-size: 16px;
+     margin-bottom: 5px;
+    }
+    .resume {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .resume h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .resume > div {
+      width: 100%;
+      border-radius: 24px;
+      border: 1px solid #0000001A;
+      display: grid;
+      padding: 10px 0;
+    }
+    .resume > div > div {
+      padding: 14px 0px;
+      margin: 0px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #0000001A;
+    }
+    .resume > div > div:last-child {
+      border-bottom: none;
+    }
+    .movements {
+      margin-bottom: 20px;
+    }
+    .movements h2 {
+      font-size: 22px;
+      padding: 20px;
+      border-bottom: 1px solid #000;
+    }
+    .movements .movement {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #0000001A;
+    }
+    .movements .movement-footer,
+    .movements .movement:nth-child(6),
+    .movements .movement:nth-child(7),
+    .movements .movement:nth-child(8),
+    .movements .movement:nth-child(9) {
+      background: #F6F6F6;
+    }
+    .movements .label {
+      display: flex;
+      align-items: center;
+    }
+    .movements .label p {
+      white-space: nowrap;
+    }
+    .movements .icon {
+      width: 0px;
+      height: 0px;
+      border-style: solid;
+      border-width: 0 8px 13.9px 8px;
+      transform: rotate(0deg);
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .movements .icon.green {
+      border-color: transparent transparent #04C471 transparent;
+    }
+    .movements .icon.red {
+      border-color: transparent transparent #E03548 transparent;
+      transform-origin: center;
+      transform: rotate(180deg);
+    }
+    .movements .movement-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      border-top: 1px solid #000;
+    }
+    .info {
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #542C831A;
+      border: 1px solid #542C834D;
+      border-radius: 24px;
+    }
+    .info .title {
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .info .title svg {
+      margin-right: 10px;
+    }
+    .info ul {
+      padding-left: 20px;
+    }
+    .subtitle {
+      font-size: 22px;
+      padding: 20px;
+    }
+    .table-container {
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      border-radius: 24px;
+      overflow: hidden;
+      table-layout: fixed;
+    }
+    table thead,
+    table tfoot {
+      background: #290C4A;
+      color: #fff;
+    }
+    table td,
+    table th {
+      padding: 10px 20px;
+      word-wrap: break-word;
+    }
+
+    /* --- Reglas de alineación y padding para la tabla de Movimientos --- */
+    /* Columnas 1, 2, 3 alineadas a la izquierda */
+    .movements-table table td:is(:nth-child(1), :nth-child(2), :nth-child(3)),
+    .movements-table table th:is(:nth-child(1), :nth-child(2), :nth-child(3)) {
+        text-align: left;
+    }
+    /* Columna 'Comercio' (4) centrada */
+    .movements-table table th:nth-child(4),
+    .movements-table table td:nth-child(4) {
+      text-align: center;
+    }
+    /* Columna 'Cargo' (la última) alineada a la derecha y sin saltos de línea */
+    .movements-table table td:last-child,
+    .movements-table table th:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+    /* Padding reducido para columnas 2 y 3 */
+    .movements-table table th:is(:nth-child(2), :nth-child(3)),
+    .movements-table table td:is(:nth-child(2), :nth-child(3)) {
+      padding-left: 5px;
+    }
+
+    /* --- Anchos específicos para la tabla de Movimientos --- */
+    .movements-table table th:nth-child(1),
+    .movements-table table td:nth-child(1) { width: 20%; } /* Fecha */
+    .movements-table table th:nth-child(2),
+    .movements-table table td:nth-child(2) { width: 20%; } /* Tarjeta */
+    .movements-table table th:nth-child(3),
+    .movements-table table td:nth-child(3) { width: 40%; } /* Comercio */
+    .movements-table table th:nth-child(4),
+    .movements-table table td:nth-child(4) { width: 20%; } /* Cargo */
+
+    table tbody tr {
+      border: 1px solid #0000001A
+    }
+    table tfoot {
+      font-weight: 700;
+    }
+    table tfoot span {
+      margin-right: 30px;
+    }
+    .table-total-footer {
+      margin-bottom: 20px;
+      text-align: right;
+      font-weight: 700;
+      background: #290C4A;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 0 0 24px 24px;
+    }
+    .table-total-footer span {
+      margin-right: 30px;
+    }
+    h4 {
+      font-size: 22px;
+      padding: 0px 20px 10px;
+      border-bottom: 1px solid #000;
+    }
+    .support {
+      page-break-inside: avoid;
+      background: #290C4A;
+      color: #fff;
+      border-radius: 24px;
+      padding: 20px;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .support .title {
+      font-size: 28px;
+      padding: 20px 20px 10px;
+      display: block;
+    }
+    .support .title ~ p {
+      padding: 0px 20px;
+      margin-bottom: 20px;
+    }
+    .support b {
+      font-size: 22px;
+    }
+    .support span {
+      margin-left: 20px;
+    }
+    .support p:nth-child(3) {
+      border-bottom: 1px solid #FFFFFF80;
+      padding-bottom: 10px;
+    }
+    footer {
+      position: fixed;
+      bottom: -120px;
+      left: 0;
+      width: 100%;
+      padding: 40px 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+    }
+    footer p:first-child {
+      max-width: 500px;
+    }
+    .break-page {
+      break-after: page;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-container">
+    <header>
+      <img src="https://file-flexza.s3.amazonaws.com/logo+flexza.png" alt="" srcset="">
+      <div class="periodo">
+        <h1>Estado de cuenta</h1>
+        <p>Periodo facturado {{start_date|date:"d/m/Y"}} - {{end_date|date:"d/m/Y"}}</p>
+      </div>
+      <div>
+        <h3>ADMINISTRACIÓN DE ECOSISTEMAS FLEXZA</h3>
+        <p>Real de Mayorazgo #130, Piso 8, Xoco, Benito Juarez, Ciudad de México, 03330</p>
+      </div>
+      <div>
+        <h3>{{entity_info.name}}</h3>
+        <p>{{entity_info.rfc}}</p>
+        <p>{{entity_info.street}} {{entity_info.no_ext}}, {{entity_info.no_int}},
+          {{entity_info.neighborhood}}, {{entity_info.municipality}}, {{entity_info.state}},
+          {{entity_info.zipcode}}
+        </p>
+      </div>
+    </header>
+  </div>
+  <div class="resume">
+    <h3>Periodo: {{start_date|date:"d/m/Y"}} - {{end_date|date:"d/m/Y"}} ({{transcurred_days}} días)</h3>
+    <div>
+      <div>
+        <p>Total de colateral inicial</p>
+        <p>${{initial_collateral}}</p>
+      </div>
+      <div>
+        <p>Total de colateral actual</p>
+        <p>${{final_collateral}}</p>
+      </div>
+      <div>
+        <p>Tarjetas activas</p>
+        <p>{{activated_cards}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="movements">
+    <h2>Resumen de movimientos</h2>
+
+    <div class="movement">
+      <div class="label">
+        <p class="icon green"></p>
+        <p>Saldo Anterior</p>
+      </div>
+      <p>${{initial_collateral}}</p>
+    </div>
+    <div class="movement">
+      <div class="label">
+        <p class="icon green"></p>
+        <p> Depósitos</p>
+      </div>
+      <p>${{deposits_amount}}</p>
+    </div>
+    <div class="movement">
+      <div class="label">
+        <p class="icon green"></p>
+        <p>Reembolsos</p>
+      </div>
+      <p>${{refund_amount}}</p>
+    </div>
+    <div class="movement">
+      <div class="label">
+        <p class="icon green"></p>
+        <p>Devoluciones</p>
+      </div>
+      <p>${{devolution_amount}}</p>
+    </div>
+    <div class="movement">
+      <div class="label">
+        <p class="icon red"></p>
+        <p>Retorno Colateral</p>
+      </div>
+      <p>${{collateral_return_amount}}</p>
+    </div>
+    <div class="movement">
+      <div class="label">
+        <p class="icon red"></p>
+        <p>Gastos</p>
+      </div>
+      <p>${{receipt_amount}}</p>
+    </div>
+    <div class="movement">
+      <div class="label">
+        <p class="icon red"></p>
+        <p>Retencion ISR</p>
+      </div>
+      <p>${{retention_amount_isr}}</p>
+    </div>
+    <div class="movement">
+      <div class="label">
+        <p class="icon red"></p>
+        <p>Retencion IVA</p>
+      </div>
+      <p>${{retention_amount_iva}}</p>
+    </div>
+
+    <div class="movement-footer">
+      <b>Saldo al corte</b>
+      <p>${{final_collateral}}</p>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="title">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 0C15.523 0 20 4.477 20 10C20 15.523 15.523 20 10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0ZM10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2ZM10 13C10.2652 13 10.5196 13.1054 10.7071 13.2929C10.8946 13.4804 11 13.7348 11 14C11 14.2652 10.8946 14.5196 10.7071 14.7071C10.5196 14.8946 10.2652 15 10 15C9.73478 15 9.48043 14.8946 9.29289 14.7071C9.10536 14.5196 9 14.2652 9 14C9 13.7348 9.10536 13.4804 9.29289 13.2929C9.48043 13.1054 9.73478 13 10 13ZM10 4C10.2652 4 10.5196 4.10536 10.7071 4.29289C10.8946 4.48043 11 4.73478 11 5V11C11 11.2652 10.8946 11.5196 10.7071 11.7071C10.5196 11.8946 10.2652 12 10 12C9.73478 12 9.48043 11.8946 9.29289 11.7071C9.10536 11.5196 9 11.2652 9 11V5C9 4.73478 9.10536 4.48043 9.29289 4.29289C9.48043 4.10536 9.73478 4 10 4Z" fill="black"/>
+      </svg>
+      <b>Importante:</b>
+    </div>
+    <ul>
+      <li><p>Los saldos mostrados en este documento son expresados en Moneda Nacional (Pesos Mexicanos), salvo que alguna operación específica señale expresamente lo contrario.</p></li>
+      <li><p>La totalidad de las operaciones en este estado de cuenta han sido autorizadas a través de medios electrónicos</p></li>
+    </ul>
+  </div>
+  <div class="break-page"></div>
+
+  <h3 class="subtitle">Resumen por Tarjeta</h3>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Tarjeta</th>
+          <th>Tipo de tarjeta</th>
+          <th>Cargo</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for card in card_expenses_summary %}
+          <tr>
+              <td>*{{card.card_number|slice:"-4:"}}</td>
+              <td>
+                {%if card.card_type == "credit"%}
+                  Crédito
+                {%elif card.card_type == "ondemand"%}
+                  On Demand
+                {%elif card.card_type == "prepaid"%}
+                  Prepagada
+                {%endif%}
+              </td>
+              <td>{{card.amount}}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <div class="table-total-footer">
+      <span>Total</span> {{card_expenses_total_amount}}
+    </div>
+  </div>
+
+
+  <h3 class="subtitle">Desglose de Movimientos</h3>
+  <div class="table-container movements-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tarjeta</th>
+          <th>Comercio</th>
+          <th>Cargo</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for movement in  movement_expenses_summary%}
+          <tr>
+            <td>{{movement.operation_date|date:"d/m"}}</td>
+            <td>*{{movement.card_number|slice:"-4:"}}</td>
+            <td>{{movement.establishment_name}}</td>
+            <td>{{movement.amount}}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <div class="table-total-footer">
+      <span>Total</span> {{movement_summary_total_amount}}
+    </div>
+  </div>
+
+  <div class="support">
+    <b class="title">¿Tienes preguntas?</b>
+    <p>
+      <b>Equipo Flexza:</b>
+      <span>525534047475</span>
+      <span>hola@flexza.com</span>
+    </p>
+    <p><b>Profeco | Atención para el consumidor</b></p>
+    <p>
+      525534047475
+      <span>htttps://www.gob.mx/profeco</span>
+    </p>
+  </div>
+
+  <footer>
+    <p>Real de Mayorazgo #130, Piso 8, Xoco, Benito Juarez, Ciudad de México, 03330 | Teléfono 123 4567 89 10</p>
+  </footer>
+</body>
+</html>
